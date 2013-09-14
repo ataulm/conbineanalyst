@@ -1,0 +1,28 @@
+# Generated files
+bin/
+target/
+
+# AppData is specific each install of GOLEM, and should be user-specific
+# so shouldn't make into the final builds of GOLEM, but initially will remain
+# while we sort out "on first launch" copy of data (to AppData).
+AppData/
+
+# root plugins folder shouldn't be included
+plugins/
+
+# Eclipse files
+.settings/
+.project
+.classpath
+
+# Netbeans
+nb-configuration.xml
+nbactions.xml
+
+# IntelliJ files
+.idea
+*.iml
+
+# temp files
+*~
+
