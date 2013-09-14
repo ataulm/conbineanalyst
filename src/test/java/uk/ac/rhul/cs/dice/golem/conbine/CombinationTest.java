@@ -17,8 +17,4 @@ public class CombinationTest {
         assert(combination.size() - sizeBefore == 1);
     }
 
-    @Test
-    public void adding_an_object_that_is_not_a_run_should_not_be_possible() throws Exception {
-        combination.add(new Object());
-    }
 }
