@@ -1,5 +1,8 @@
 package uk.ac.rhul.cs.dice.golem.conbine;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 public class Run {
     private final int runLabel;
     private Boolean parseStatus;
@@ -12,11 +15,11 @@ public class Run {
         return runLabel;
     }
 
-    public void succeed() {
+    private void succeed() {
         parseStatus = true;
     }
 
-    public void fail() {
+    private void fail() {
         parseStatus = false;
     }
 
@@ -38,5 +41,27 @@ public class Run {
      */
     public boolean hasFailed() {
         return parseStatus != null && !parseStatus;
+    }
+
+    public void parse(Path path) {
+        if (isValidRunHistoryFile(path)) {
+            succeed();
+        } else {
+            fail();
+        }
+    }
+
+    private void iterateHistory() {
+
+    }
+
+    /**
+     * Naive check on validity of history file - checks extension and existence.
+     *
+     * @param path the path of the file to check validity for
+     * @return isValid  true if file exists and has correct file extension, else false
+     */
+    private boolean isValidRunHistoryFile(Path path) {
+        return path.toString().endsWith(".runhistory") && Files.exists(path);
     }
 }

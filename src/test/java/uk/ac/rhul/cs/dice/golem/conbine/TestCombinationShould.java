@@ -3,7 +3,7 @@ package uk.ac.rhul.cs.dice.golem.conbine;
 
 import org.junit.Test;
 
-public class CombinationShould {
+public class TestCombinationShould {
     private final int label = 1;
     private final Combination combination = new Combination(label);
 
