@@ -12,21 +12,12 @@ public class Run {
         return runLabel;
     }
 
-    public void fail() {
-        parseStatus = false;
+    public void succeed() {
+        parseStatus = true;
     }
 
-    /**
-     * Indicates whether the container history for this run was unable to
-     * successfully complete.
-     *
-     * @return failed  value is true if the run failed to parse, else false
-     */
-    public boolean hasFailed() {
-        if (!parseStatus) {
-            return true;
-        }
-        return false;
+    public void fail() {
+        parseStatus = false;
     }
 
     /**
@@ -36,9 +27,16 @@ public class Run {
      * @return success  value is true if the run was successfully parsed, else false
      */
     public boolean hasSucceeded() {
-        if (parseStatus) {
-            return true;
-        }
-        return false;
+        return parseStatus != null && parseStatus;
+    }
+
+    /**
+     * Indicates whether the container history for this run was unable to
+     * successfully complete.
+     *
+     * @return failed  value is true if the run failed to parse, else false
+     */
+    public boolean hasFailed() {
+        return parseStatus != null && !parseStatus;
     }
 }
