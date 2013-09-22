@@ -1,5 +1,6 @@
 package uk.ac.rhul.cs.dice.golem.conbine;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.net.URL;
@@ -49,5 +50,13 @@ public class TestRunShould {
         Path path = Paths.get(sampleHistoryDir.toString(), "1_1.runhistory");
         run.parse(path);
         assert (run.hasSucceeded());
+    }
+
+    @Ignore
+    @Test
+    public void change_its_parse_state_to_failed_when_it_is_unable_to_parse() throws Exception {
+        Path path = Paths.get(sampleHistoryDir.toString(), "malformed.runhistory");
+        run.parse(path);
+        assert (run.hasFailed());
     }
 }
