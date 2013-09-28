@@ -1,11 +1,11 @@
 package uk.ac.rhul.cs.dice.golem.conbine;
 
-import org.junit.Ignore;
-import org.junit.Test;
-
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import org.junit.Ignore;
+import org.junit.Test;
 
 public class TestRunShould {
     private static final int label = 1;
@@ -34,21 +34,21 @@ public class TestRunShould {
     @Test
     public void change_its_parse_state_to_failed_when_a_path_with_the_wrong_file_extension_is_given() throws Exception {
         Path path = Paths.get(sampleHistoryDir.toString(), "1_1.wrongextension");
-        run.parse(path);
+        run.parseRunHistoryFileToContainerHistory(path);
         assert (run.hasFailed());
     }
 
     @Test
     public void change_its_parse_state_to_failed_when_a_non_existent_path_is_given() throws Exception {
         Path path = Paths.get("non-existent-path.runhistory");
-        run.parse(path);
+        run.parseRunHistoryFileToContainerHistory(path);
         assert (run.hasFailed());
     }
 
     @Test
     public void change_its_parse_state_to_successful_when_it_parses_a_valid_file() throws Exception {
         Path path = Paths.get(sampleHistoryDir.toString(), "1_1.runhistory");
-        run.parse(path);
+        run.parseRunHistoryFileToContainerHistory(path);
         assert (run.hasSucceeded());
     }
 
@@ -56,7 +56,9 @@ public class TestRunShould {
     @Test
     public void change_its_parse_state_to_failed_when_it_is_unable_to_parse() throws Exception {
         Path path = Paths.get(sampleHistoryDir.toString(), "malformed.runhistory");
-        run.parse(path);
+        run.parseRunHistoryFileToContainerHistory(path);
         assert (run.hasFailed());
     }
+
+
 }
