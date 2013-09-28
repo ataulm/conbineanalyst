@@ -1,10 +1,10 @@
 package uk.ac.rhul.cs.dice.golem.conbine;
 
+import org.javatuples.Tuple;
+
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.util.ArrayList;
-
-import org.javatuples.Tuple;
 
 public class Run {
     private final int runLabel;
@@ -59,6 +59,7 @@ public class Run {
 
 
     private void convertToHistoryAndParse(Path path) throws FileNotFoundException {
+
 
     }
 

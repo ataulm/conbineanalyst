@@ -1,29 +1,40 @@
 package uk.ac.rhul.cs.dice.golem.conbine;
 
-import java.io.File;
-import java.nio.file.Path;
-import java.util.Scanner;
-
 import org.javatuples.Quartet;
-
+import org.javatuples.Tuple;
 import uk.ac.rhul.cs.dice.golem.container.ContainerHistory;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 public class RunParser {
+
+    public static final String RUN_HISTORY_EXT = ".runhistory";
+
     public static ContainerHistory parseRunHistoryFileToContainerHistory(Path path) {
-        ContainerHistory history = ContainerHistory.;
+        ContainerHistory history;
+        List<Tuple> lines = new ArrayList<>();
 
         if (!fileHasCorrectExtension(path)) {
-            fail();
-            return;
+            return null;
         }
 
         File file = path.toFile();
-        Scanner scanner = new Scanner(file);
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         int linesProcessed = 0;
 
         if (scanner.hasNext()) {
             StringBuilder startProcessingString = new StringBuilder();
-            startProcessingString.append("Starting processing of run (").append(getLabel()).append("). ")
+            startProcessingString.append("Starting processing of run (").append(path.getFileName()).append("). ")
                     .append("Skipping column headings: ").append(scanner.nextLine());
             System.out.println(startProcessingString.toString());
             linesProcessed++;
@@ -49,6 +60,11 @@ public class RunParser {
             }
         }
         System.out.println("Processed " + linesProcessed + " lines (inc. headers).");
+        return null;
+    }
+
+    private static boolean fileHasCorrectExtension(Path path) {
+        return path.getFileName().endsWith(RUN_HISTORY_EXT);
     }
 
 }
