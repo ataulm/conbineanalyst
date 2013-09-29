@@ -9,7 +9,7 @@ import java.nio.file.Path;
 import java.util.Scanner;
 
 /**
- * The RunParser should return a valid ContainerHistory for the run, or null if the file is malformed.
+ * RunParser takes a file as input, and returns a ContainerHistory (or null if not successful).
  */
 public class RunParser {
 
@@ -34,6 +34,9 @@ public class RunParser {
             return null;
         }
 
+        // skip the first line (column headings)
+        scanner.next();
+
         while (scanner.hasNextLine()) {
             Event event = parseLine(scanner.nextLine());
             if (event != null) {
@@ -50,6 +53,7 @@ public class RunParser {
         try {
             scanner = new Scanner(file);
         } catch (FileNotFoundException e) {
+            System.err.println("Not found: " + path.toString());
             return null;
         }
         return scanner;

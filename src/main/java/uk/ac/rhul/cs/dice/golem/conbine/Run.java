@@ -1,9 +1,10 @@
 package uk.ac.rhul.cs.dice.golem.conbine;
 
+import uk.ac.rhul.cs.dice.golem.container.ContainerHistory;
+
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
-import uk.ac.rhul.cs.dice.golem.container.ContainerHistory;
 
 
 public class Run {
@@ -29,7 +30,8 @@ public class Run {
     }
 
     private String getExpectedPathToRunHistoryFile() {
-        return constructNameOfRunHistoryFile();
+        URL currentDirectory = getClass().getProtectionDomain().getCodeSource().getLocation();
+        return Paths.get(String.valueOf(currentDirectory.getPath()), constructNameOfRunHistoryFile()).toString();
     }
 
     private String constructNameOfRunHistoryFile() {

@@ -8,8 +8,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public final class ResultsController {
+    public static final boolean DEBUG = true;
     private static final int DEFAULT_NUM_COMBINATIONS = 27;
     private static int DEFAULT_NUM_RUNS_PER_COMBINATION = 100;
+
     private static final List<String> DEFAULT_SELECTED_BUYERS = new ArrayList<>(Arrays.asList("buyer_1", "buyer_2"));
 
     private final String[] BUYERS;
@@ -19,6 +21,7 @@ public final class ResultsController {
         combinations = new ArrayList<>(combo);
         BUYERS = buyers;
         initialiseCombinations(combo, runs);
+        parse();
     }
 
     private void initialiseCombinations(int combo, int runs) {
@@ -44,10 +47,17 @@ public final class ResultsController {
     /**
      * **************************************************************************************************************
      */
+
     private static ResultsController controller;
+    private static final boolean GET_USER_INPUT = true;
+
     public static void main(String[] args) {
-        onCreateWithDefaults();
-//        onCreateWithUserInput();
+        if (GET_USER_INPUT) {
+            onCreateWithUserInput();
+        } else {
+            onCreateWithDefaults();
+        }
+
         controller.parse();
     }
 
