@@ -8,7 +8,7 @@ import uk.ac.rhul.cs.dice.golem.conbine.action.NegotiationAction;
 
 import static uk.ac.rhul.cs.dice.golem.conbine.action.ConbineActionType.valueOf;
 
-public class ConbineActionParser {
+public class ActionParser {
 
     public static Action parse(String senderId, String action) {
         return parse(senderId, null, action);

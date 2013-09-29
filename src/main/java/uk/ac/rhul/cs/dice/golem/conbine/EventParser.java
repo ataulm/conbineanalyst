@@ -51,11 +51,11 @@ public class EventParser {
     }
 
     private static Action getActionForEventWithThreeTerms(String sender, String actionToParse) {
-        return ConbineActionParser.parse(sender, actionToParse);
+        return ActionParser.parse(sender, actionToParse);
     }
 
     private static Action getActionForEventWithFourTerms(String sender, String recipient, String actionToParse) {
-        return ConbineActionParser.parse(sender, recipient, actionToParse);
+        return ActionParser.parse(sender, recipient, actionToParse);
     }
 
     private static String getSender(String[] eventParts) {

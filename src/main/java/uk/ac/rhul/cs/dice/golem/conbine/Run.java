@@ -1,79 +1,31 @@
 package uk.ac.rhul.cs.dice.golem.conbine;
 
-import org.javatuples.Tuple;
+import uk.ac.rhul.cs.dice.golem.container.ContainerHistory;
 
-import java.io.FileNotFoundException;
 import java.nio.file.Path;
-import java.util.ArrayList;
+import java.nio.file.Paths;
+
 
 public class Run {
     private final int runLabel;
-    private Boolean parseStatus;
-    private ArrayList<Tuple> lines = new ArrayList<>();
+    private ContainerHistory history;
+    private Combination context;
 
-    public Run(int runLabel) {
+    public Run(Combination context, int runLabel) {
         this.runLabel = runLabel;
+        this.context = context;
     }
 
     public int getLabel() {
         return runLabel;
     }
 
-    private void succeed() {
-        parseStatus = true;
+    public void parseRun() {
+        Path path = Paths.get(getExpectedPathToRunHistoryFile());
+        history = RunParser.parseRunHistoryFileToContainerHistory(path);
     }
 
-    private void fail() {
-        System.err.println("Failed to parse run: " + getLabel());
-        parseStatus = false;
-    }
-
-    /**
-     * Indicates whether the container history for this run has successfully
-     * been parsed.
-     *
-     * @return success  value is true if the run was successfully parsed, else false
-     */
-    public boolean hasSucceeded() {
-        return parseStatus != null && parseStatus;
-    }
-
-    /**
-     * Indicates whether the container history for this run was unable to
-     * successfully complete.
-     *
-     * @return failed  value is true if the run failed to parseRunHistoryFileToContainerHistory, else false
-     */
-    public boolean hasFailed() {
-        return parseStatus != null && !parseStatus;
-    }
-
-    public void parseRunHistoryFileToContainerHistory(Path path) {
-        try {
-            convertToHistoryAndParse(path);
-        } catch (FileNotFoundException e) {
-            fail();
-            e.printStackTrace();
-        }
-    }
-
-
-    private void convertToHistoryAndParse(Path path) throws FileNotFoundException {
-
-
-    }
-
-    /**
-     * Naive check on validity of history file - checks extension.
-     *
-     * @param path the path of the file to check validity for
-     * @return isValid  true if file exists and has correct file extension, else false
-     */
-    private boolean fileHasCorrectExtension(Path path) {
-        return path.toString().endsWith(".runhistory");
-    }
-
-    private void iterateHistory(Path path) {
-
+    private String getExpectedPathToRunHistoryFile() {
+        return context.getLabel() + "_" + runLabel + RunParser.RUN_HISTORY_EXT;
     }
 }

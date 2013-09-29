@@ -1,70 +1,64 @@
 package uk.ac.rhul.cs.dice.golem.conbine;
 
-import org.javatuples.Quartet;
-import org.javatuples.Tuple;
+import uk.ac.rhul.cs.dice.golem.action.Event;
 import uk.ac.rhul.cs.dice.golem.container.ContainerHistory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
+/**
+ * The RunParser should return a valid ContainerHistory for the run, or null if the file is malformed.
+ */
 public class RunParser {
 
     public static final String RUN_HISTORY_EXT = ".runhistory";
 
+    /**
+     * Given the path to a runhistory file, it returns a ContainerHistory.
+     * <p/>
+     * A forgiving parser - it will skip lines that don't yield a valid Event, rather than
+     * condemn the entire file.
+     * <p/>
+     * This does mean that (carelessly) edited or corrupt files may result in a crash though.
+     *
+     * @param path the path to the runhistory file
+     * @return history  the ContainerHistory resulting from parsing the file
+     */
     public static ContainerHistory parseRunHistoryFileToContainerHistory(Path path) {
-        ContainerHistory history;
-        List<Tuple> lines = new ArrayList<>();
+        ContainerHistory history = new ContainerHistory();
+        Scanner scanner = getScannerWithPath(path);
 
-        if (!fileHasCorrectExtension(path)) {
+        if (scanner == null) {
             return null;
         }
 
+        while (scanner.hasNextLine()) {
+            Event event = parseLine(scanner.nextLine());
+            if (event != null) {
+                history.assertEvent(event);
+            }
+        }
+
+        return history;
+    }
+
+    private static Scanner getScannerWithPath(Path path) {
         File file = path.toFile();
         Scanner scanner = null;
         try {
             scanner = new Scanner(file);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            return null;
         }
-        int linesProcessed = 0;
-
-        if (scanner.hasNext()) {
-            StringBuilder startProcessingString = new StringBuilder();
-            startProcessingString.append("Starting processing of run (").append(path.getFileName()).append("). ")
-                    .append("Skipping column headings: ").append(scanner.nextLine());
-            System.out.println(startProcessingString.toString());
-            linesProcessed++;
-        }
-
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
-            if (line == null || line.trim().length() == 0) {
-                continue;
-            }
-
-            linesProcessed++;
-
-            String[] splitLine = line.split(":::");
-
-            if (splitLine.length == 3) {
-                lines.add(new Quartet<>(splitLine[0], splitLine[1], null, splitLine[2]));
-            } else if (splitLine.length == 4) {
-                lines.add(new Quartet<>(splitLine[0], splitLine[1], splitLine[2], splitLine[3]));
-            } else {
-                System.err.println("Malformed run history.");
-                return null;
-            }
-        }
-        System.out.println("Processed " + linesProcessed + " lines (inc. headers).");
-        return null;
+        return scanner;
     }
 
-    private static boolean fileHasCorrectExtension(Path path) {
-        return path.getFileName().endsWith(RUN_HISTORY_EXT);
+    private static Event parseLine(String line) {
+        if (line == null || line.trim().length() == 0) {
+            return null;
+        }
+        return EventParser.parse(line);
     }
-
 }
