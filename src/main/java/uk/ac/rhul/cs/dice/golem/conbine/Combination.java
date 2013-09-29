@@ -6,37 +6,22 @@ import java.util.List;
 public class Combination {
     private List<Run> runs;
     private final int LABEL;
-
+    private final ResultsController context;
 
     public Combination(ResultsController context, int label, int numberOfRuns) {
-        runs = new ArrayList<Run>(numberOfRuns);
+        this.context = context;
         this.LABEL = label;
-    }
-
-    public int size() {
-        return runs.size();
-    }
-
-    public void add(Run run) {
-        runs.add(run);
+        runs = new ArrayList<>(numberOfRuns);
+        initialiseRuns(numberOfRuns);
     }
 
     public int getLabel() {
         return LABEL;
     }
 
-    public Run get(int runLabel) {
-        for (Run run : runs) {
-            if (run.getLabel() == runLabel) {
-                return run;
-            }
-        }
-        return null;
-    }
-
-    public void initialiseRuns(int numberOfRuns) {
+    private void initialiseRuns(int numberOfRuns) {
         for (int i = 0; i < numberOfRuns; i++) {
-            runs.add(new Run(this, i));
+            runs.add(new Run(this, i + 1));
         }
     }
 

@@ -1,9 +1,9 @@
 package uk.ac.rhul.cs.dice.golem.conbine;
 
-import uk.ac.rhul.cs.dice.golem.container.ContainerHistory;
-
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import uk.ac.rhul.cs.dice.golem.container.ContainerHistory;
 
 
 public class Run {
@@ -23,9 +23,17 @@ public class Run {
     public void parseRun() {
         Path path = Paths.get(getExpectedPathToRunHistoryFile());
         history = RunParser.parseRunHistoryFileToContainerHistory(path);
+        if (history == null) {
+            System.out.println("History was not parsed for run: " + constructNameOfRunHistoryFile());
+        }
     }
 
     private String getExpectedPathToRunHistoryFile() {
+        return constructNameOfRunHistoryFile();
+    }
+
+    private String constructNameOfRunHistoryFile() {
         return context.getLabel() + "_" + runLabel + RunParser.RUN_HISTORY_EXT;
     }
+
 }

@@ -18,10 +18,17 @@ public final class ResultsController {
     private ResultsController(int combo, int runs, String[] buyers) {
         combinations = new ArrayList<>(combo);
         BUYERS = buyers;
+        initialiseCombinations(combo, runs);
+    }
 
+    private void initialiseCombinations(int combo, int runs) {
         for (int i = 0; i < combo; i++) {
-            combinations.add(new Combination(this, i, runs));
-            combinations.get(i).initialiseRuns(runs);
+            combinations.add(new Combination(this, i + 1, runs));
+        }
+    }
+
+    public void parse() {
+        for (int i = 0; i < combinations.size(); i++) {
             combinations.get(i).parseRuns();
         }
     }
@@ -37,14 +44,27 @@ public final class ResultsController {
     /**
      * **************************************************************************************************************
      */
-
+    private static ResultsController controller;
     public static void main(String[] args) {
+        onCreateWithDefaults();
+//        onCreateWithUserInput();
+        controller.parse();
+    }
+
+    private static void onCreateWithUserInput() {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
         int combo = queryUserForNumberOfCombos(br);
         int runs = queryUserForNumberOfRuns(br);
         String[] buyers = queryUserForSelectedBuyers(br);
 
-        new ResultsController(combo, runs, buyers);
+        controller = new ResultsController(combo, runs, buyers);
+    }
+
+    private static void onCreateWithDefaults() {
+        controller = new ResultsController(DEFAULT_NUM_COMBINATIONS,
+                DEFAULT_NUM_RUNS_PER_COMBINATION,
+                DEFAULT_SELECTED_BUYERS.toArray(new String[DEFAULT_SELECTED_BUYERS.size()]));
     }
 
     private static String[] queryUserForSelectedBuyers(BufferedReader br) {
