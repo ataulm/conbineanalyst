@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Wrapper around a list of Strings
+ * Wrapper around a list of Strings - it's intended that this class is used
+ * to store all information for the PM it represents (all combinations, all selected agents)
+ * like in ConbineResults.
  */
 public class PerformanceMetric {
     private final List<String> LINES;
